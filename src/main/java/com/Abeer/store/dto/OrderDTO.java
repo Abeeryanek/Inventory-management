@@ -1,4 +1,4 @@
-package com.Abeer.store.dto;
+package com.abeer.store.dto;
 
 public class OrderDTO {
     

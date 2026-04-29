@@ -1,4 +1,4 @@
-package com.Abeer.store.controller;
+package com.abeer.store.controller;
 
 import org.springframework.stereotype.Controller;
 

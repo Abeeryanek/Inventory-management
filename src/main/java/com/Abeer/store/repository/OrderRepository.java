@@ -1,4 +1,4 @@
-package com.Abeer.store.repository;
+package com.abeer.store.repository;
 
 import org.springframework.stereotype.Repository;
 

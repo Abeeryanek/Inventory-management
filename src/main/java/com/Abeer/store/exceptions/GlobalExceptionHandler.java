@@ -1,4 +1,4 @@
-package com.Abeer.store.exceptions;
+package com.abeer.store.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;

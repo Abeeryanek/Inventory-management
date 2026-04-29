@@ -1,4 +1,4 @@
-package com.Abeer.store.entity;
+package com.abeer.store.entity;
 import java.util.List;
 
 import jakarta.persistence.Column;
