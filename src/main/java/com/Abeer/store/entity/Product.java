@@ -1,7 +1,6 @@
 package com.abeer.store.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,12 +29,14 @@ public class Product {
   
     //--- DDD ---
     protected Product() {}
-  public Product(String productName, BigDecimal currentPrice, Integer stockQuantity, LocalTime lastUpdated) {
+  public Product(String productName, BigDecimal currentPrice, Integer stockQuantity) {
         this.productName = productName;
         this.currentPrice = currentPrice;
         this.stockQuantity = stockQuantity;
         this.lastUpdated = LocalDateTime.now();
     }
+//logic 
+
     public void updatePrice(BigDecimal newPrice)
 {
     if(newPrice.compareTo(BigDecimal.ZERO) <= 0) {
@@ -44,6 +45,7 @@ public class Product {
     this.currentPrice = newPrice;
     this.lastUpdated = LocalDateTime.now();
 }    
+
 //--- Getters ---
     public Long getProductId() {
         return productId;
