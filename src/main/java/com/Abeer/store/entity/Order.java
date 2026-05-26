@@ -42,16 +42,16 @@ public class Order {
     @JoinColumn(name="user_id")
     private User user;
 
-    @OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OneToMany(mappedBy="order", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<OrderItem> items = new ArrayList<>();
 
     //--- Constructors ---
     protected Order() {}
 
-    public Order(String orderName, User user, OrderStatus initialOrderStatus){
+    public Order(String orderName, User user){
         this.orderName = orderName;
         this.user = user;
-        this.status = initialOrderStatus;
+        this.status = OrderStatus.PENDING;
     }
 
     // --- DDD Logic ---
@@ -75,7 +75,14 @@ public class Order {
         .multiply(BigDecimal.valueOf(item.getQuantity())))
         .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
+    public void cancel(){
+        if(this.status==OrderStatus.SHIPPED || 
+            this.status==OrderStatus.DELIVERED){
+                throw new IllegalStateException(
+                    "cannot cancel an order that is already been" +this.status);
+            }
+             this.status = OrderStatus.CANCELLED;
+    }
     //--- Getters ---
     public Long getOrderId() {
         return orderId;
