@@ -50,7 +50,7 @@ public class ProductController {
    }
    //POST: Register a completely new product
    @PostMapping
-   public ResponseEntity<ProductResponse> create(@Valid @RequestBody CreateProductRequest request){
+   public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest request){
     log.info("POST /api/v1/products - name: {}", request.name());
     ProductResponse created = productService.create(request);
     URI location = URI.create("/api/v1/products/"+created.id());
