@@ -54,6 +54,9 @@ protected OrderItem() {}
     public Order getOrder() {
         return order;
     }
+    public Long getOrderItemId(){
+        return orderItemId;
+    }
     //---setters---
 
     public void setOrder(Order order) {
