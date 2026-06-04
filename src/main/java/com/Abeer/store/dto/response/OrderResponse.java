@@ -10,7 +10,7 @@ public class OrderResponse {
     BigDecimal priceAtpurchase,
     Integer quantity)
     {}
-  public record full (
+  public record Full (
     Long odrerId,
     String orderName,
     String orderStatus,
