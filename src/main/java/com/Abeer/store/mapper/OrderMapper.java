@@ -16,8 +16,7 @@ public class OrderMapper {
             order.getOrderName(),
             order.getOrderStatus().name(),
             order.getTotalPrice(),
-            order.getUser().getUsername() !=null ? 
-            order.getUser().getUsername() :null,
+            order.getUser().getUsername(),
             order.getItems().stream().map(this::toItemResponse).collect(Collectors.toList())
 
         );
@@ -31,4 +30,5 @@ public class OrderMapper {
             orderItem.getQuantity()
         );
     }
+    
 }

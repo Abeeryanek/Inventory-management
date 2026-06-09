@@ -11,7 +11,7 @@ public class OrderResponse {
     Integer quantity)
     {}
   public record Full (
-    Long odrerId,
+    Long orderId,
     String orderName,
     String orderStatus,
     BigDecimal price,

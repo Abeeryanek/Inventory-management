@@ -43,30 +43,30 @@ public class OrderController {
     private final OrderService orderservice;
   
  @GetMapping
- public ResponseEntity<Page<OrderResponse>> getAllOrders(Pageable pageable){
+ public ResponseEntity<Page<OrderResponse.Full>> getAllOrders(Pageable pageable){
     log.info("fetching orders");
-    Page<OrderResponse> orders= orderservice.findAll(pageable);
+    Page<OrderResponse.Full> orders= orderservice.findAll(pageable);
     return ResponseEntity.ok(orders);
  }
  @GetMapping("/{id}")
- public ResponseEntity<OrderResponse> getOrderById(@PathVariable Long id){
+ public ResponseEntity<OrderResponse.Full> getOrderById(@PathVariable Long id){
     log.info("Fetching order id :{}", id);
-    OrderResponse order = orderservice.findById(id);
+    OrderResponse.Full order = orderservice.findById(id);
     return ResponseEntity.ok(order);
  }
 @PostMapping
-public ResponseEntity<OrderResponse> createOrder( @Valid @RequestBody  CreateOrderRequest request){
-        log.info("POST /api/v1/orders - name {}",request.name());
-        OrderResponse created= orderservice.create(request);
-        URI location = URI.create("/api/v1/orders"+created.id());
+public ResponseEntity<OrderResponse.Full> createOrder( @Valid @RequestBody  CreateOrderRequest request){
+        log.info("POST /api/v1/orders - name {}",request.orderName());
+        OrderResponse.Full created= orderservice.create(request);
+        URI location = URI.create("/api/v1/orders"+created.orderId());
         return ResponseEntity.created(location).body(created);
 }
 
 @PutMapping("/{id}")
-public ResponseEntity<OrderResponse> addOrderItem(@PathVariable Long id, 
+public ResponseEntity<OrderResponse.Full> addOrderItem(@PathVariable Long id, 
     @Valid @RequestBody AddOrderItemRequest request){
         log.info("PUT /api/v1/orders/{}",id);
-        OrderResponse add = orderservice.addOrderItem(id,request);
+        OrderResponse.Full add = orderservice.addOrderItem(id,request);
         return ResponseEntity.ok(add);
         
     }
