@@ -60,6 +60,7 @@ public class Order {
         if (this.status == OrderStatus.CANCELLED) {
             throw new IllegalStateException("Cannot ship a cancelled order.");
         }
+        //price will be taken from the konto //TODO 
         this.status = OrderStatus.SHIPPED;
     }
     public void addOrderItem(OrderItem newItem){
@@ -68,6 +69,7 @@ public class Order {
        }
        this.items.add(newItem);
        newItem.setOrder(this);
+       newItem.getProduct().reserveStock(newItem.getQuantity());
         recalculatedTotalPrice();
     }
     public void recalculatedTotalPrice() {
@@ -80,6 +82,10 @@ public class Order {
             this.status==OrderStatus.DELIVERED){
                 throw new IllegalStateException(
                     "cannot cancel an order that is already been" +this.status);
+            }
+            //refund the person logic later //TODO 
+            for(OrderItem items:this.getItems()){
+                items.getProduct().restoreStock(items.getQuantity());
             }
              this.status = OrderStatus.CANCELLED;
     }

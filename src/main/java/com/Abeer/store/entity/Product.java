@@ -2,6 +2,8 @@ package com.abeer.store.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.abeer.store.exceptions.ProductOutOfStockException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +37,16 @@ public class Product {
         this.stockQuantity = stockQuantity;
         this.lastUpdated = LocalDateTime.now();
     }
+    public void reserveStock(Integer stockQuantityRequested){
+        if(this.stockQuantity<stockQuantityRequested){
+            throw new ProductOutOfStockException("Product out of stock");
+        }
+        this.stockQuantity-=stockQuantityRequested;
+        
+    }
+    public void restoreStock(Integer stockQuantityRequested){
+        this.stockQuantity+=stockQuantityRequested;
+    }
 //logic 
 
     public void updatePrice(BigDecimal newPrice)
@@ -45,7 +57,15 @@ public class Product {
     this.currentPrice = newPrice;
     this.lastUpdated = LocalDateTime.now();
 }    
-
+    public void updateDetails(String productName,BigDecimal newPrice,Integer stockQuantity){
+        if(newPrice.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalArgumentException("Price must be greater than zero.");
+        }
+        this.productName=productName;
+        this.currentPrice=newPrice;
+        this.stockQuantity=stockQuantity;
+        this.lastUpdated=LocalDateTime.now();
+}
 //--- Getters ---
     public Long getProductId() {
         return productId;
