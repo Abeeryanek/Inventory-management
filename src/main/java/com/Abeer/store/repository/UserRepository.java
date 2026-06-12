@@ -1,8 +1,9 @@
 package com.abeer.store.repository;
-import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.abeer.store.entity.User;
+import org.springframework.stereotype.Repository;
 import java.util.Optional;
+import com.abeer.store.entity.User;
+
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
 
