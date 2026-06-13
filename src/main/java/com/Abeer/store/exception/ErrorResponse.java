@@ -1,4 +1,4 @@
-package com.abeer.store.exceptions;
+package com.abeer.store.exception;
 
     public record ErrorResponse(
         String error, 

@@ -1,4 +1,4 @@
-package com.abeer.store.exceptions;
+package com.abeer.store.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message){

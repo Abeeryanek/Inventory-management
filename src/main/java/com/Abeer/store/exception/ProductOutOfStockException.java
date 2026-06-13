@@ -1,4 +1,4 @@
-package com.abeer.store.exceptions;
+package com.abeer.store.exception;
 
 public class ProductOutOfStockException extends RuntimeException {
     public ProductOutOfStockException (String message){
