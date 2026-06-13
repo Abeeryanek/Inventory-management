@@ -6,7 +6,7 @@ target/
 .apt_generated
 .idea
 *.iml
-application-local.yml   
+application.yaml   
 .env 
 ### STS ###
 .apt_generated
