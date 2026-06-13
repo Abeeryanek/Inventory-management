@@ -8,8 +8,8 @@ import com.abeer.store.dto.request.CreateProductRequest;
 import com.abeer.store.dto.request.UpdatePriceRequest;
 import com.abeer.store.dto.request.UpdateProductRequest;
 import com.abeer.store.dto.response.ProductResponse;
-import com.abeer.store.entity.Product; 
-import com.abeer.store.exceptions.ResourceNotFoundException;
+import com.abeer.store.entity.Product;
+import com.abeer.store.exception.ResourceNotFoundException;
 import com.abeer.store.mapper.ProductMapper;
 import com.abeer.store.repository.ProductRepository;
 

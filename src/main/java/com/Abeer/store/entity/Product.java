@@ -2,7 +2,7 @@ package com.abeer.store.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.abeer.store.exceptions.ProductOutOfStockException;
+import com.abeer.store.exception.ProductOutOfStockException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

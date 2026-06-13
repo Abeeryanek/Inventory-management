@@ -12,7 +12,7 @@ import com.abeer.store.entity.Order;
 import com.abeer.store.entity.OrderItem;
 import com.abeer.store.entity.Product;
 import com.abeer.store.entity.User;
-import com.abeer.store.exceptions.ResourceNotFoundException;
+import com.abeer.store.exception.ResourceNotFoundException;
 import com.abeer.store.mapper.OrderMapper;
 import com.abeer.store.repository.OrderRepository;
 import com.abeer.store.repository.ProductRepository;
