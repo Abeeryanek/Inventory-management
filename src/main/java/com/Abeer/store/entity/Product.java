@@ -11,7 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 @Entity
+@Getter 
 @Table(name="products")
 public class Product {
     @Id
@@ -28,8 +30,7 @@ public class Product {
     private LocalDateTime lastUpdated;
     @Column(nullable=false)
     private Integer stockQuantity;
-  
-    //--- DDD ---
+
     protected Product() {}
   public Product(String productName, BigDecimal currentPrice, Integer stockQuantity) {
         this.productName = productName;
@@ -44,10 +45,10 @@ public class Product {
         this.stockQuantity-=stockQuantityRequested;
         
     }
+    //when cancelling an order this should be called to regain the stock
     public void restoreStock(Integer stockQuantityRequested){
         this.stockQuantity+=stockQuantityRequested;
     }
-//logic 
 
     public void updatePrice(BigDecimal newPrice)
 {
@@ -66,20 +67,5 @@ public class Product {
         this.stockQuantity=stockQuantity;
         this.lastUpdated=LocalDateTime.now();
 }
-//--- Getters ---
-    public Long getProductId() {
-        return productId;
-    }
-    public String getProductName() {
-        return productName;
-    }
-    public BigDecimal getCurrentPrice() {
-        return currentPrice;
-    }
-    public Integer getStockQuantity() {
-        return stockQuantity;
-    }
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
+
 }

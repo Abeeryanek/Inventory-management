@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 @Transactional
+//i shoulndt add logs here or how seniors do it 
 public class ProductService {
       private final ProductMapper productMapper;
       private final ProductRepository productRepository;
@@ -27,6 +28,7 @@ public class ProductService {
       return productMapper.toResponse(product); }
 
     @Transactional(readOnly=true)
+    //here i can create a reposne and a new mapper and map or what
     public Page<ProductResponse.Full> findAll(Pageable pageable) { 
       return productRepository.findAll(pageable).map(productMapper::toResponse); }
     @Transactional
