@@ -1,4 +1,4 @@
-package com.abeer.store.dto.request;
+package com.abeer.store.dto.orderItem;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

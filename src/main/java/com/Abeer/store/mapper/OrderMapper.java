@@ -4,14 +4,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.abeer.store.dto.response.OrderResponse;
+import com.abeer.store.dto.order.OrderResponse;
 import com.abeer.store.entity.Order;
 import com.abeer.store.entity.OrderItem;
 
 @Component
 public class OrderMapper {
-    public OrderResponse.Full toResponse(Order order){
-        return new OrderResponse.Full(
+    public OrderResponse toResponse(Order order){
+        return new OrderResponse(
             order.getOrderId(),
             order.getOrderName(),
             order.getOrderStatus().name(),
@@ -22,8 +22,8 @@ public class OrderMapper {
         );
     }
 
-    public OrderResponse.OrderItemResponse toItemResponse(OrderItem orderItem){
-        return new OrderResponse.OrderItemResponse(
+    public OrderItemResponse toItemResponse(OrderItem orderItem){
+        return new OrderItemResponse(
             orderItem.getOrderItemId(),
             orderItem.getProduct().getProductName(),
             orderItem.getPriceAtPurchase(),

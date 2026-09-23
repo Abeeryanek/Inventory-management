@@ -1,4 +1,4 @@
-package com.abeer.store.dto.request;
+package com.abeer.store.dto.product;
 import java.math.BigDecimal;
 
 import jakarta.validation.constraints.DecimalMin;

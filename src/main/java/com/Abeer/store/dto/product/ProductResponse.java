@@ -1,14 +1,14 @@
-package com.abeer.store.dto.response;
+package com.abeer.store.dto.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-public class ProductResponse {
-    public record Full (
+
+public record ProductResponse(
         Long productId,
         String productName,
         BigDecimal currentPrice,
         Integer stockQuantity,
         LocalDateTime lastUpdated
     ) {}
-}
+

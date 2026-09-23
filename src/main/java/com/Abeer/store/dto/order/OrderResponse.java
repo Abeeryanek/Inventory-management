@@ -1,16 +1,11 @@
-package com.abeer.store.dto.response;
+package com.abeer.store.dto.order;
 
 import java.math.BigDecimal;
 import java.util.List;
+import com.abeer.store.dto.orderItem.OrderItemResponse;
 
-public class OrderResponse {
-  public record OrderItemResponse(
-    Long orderItemId,
-    String productName,
-    BigDecimal priceAtpurchase,
-    Integer quantity)
-    {}
-  public record Full (
+ 
+  public record OrderResponse (
     Long orderId,
     String orderName,
     String orderStatus,
@@ -18,7 +13,6 @@ public class OrderResponse {
     String username,
     List<OrderItemResponse> items  
   ) {}
-}
 
 
 
