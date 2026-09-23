@@ -33,21 +33,40 @@ public class Product {
 
     protected Product() {}
   public Product(String productName, BigDecimal currentPrice, Integer stockQuantity) {
+    if(productName==null || productName.isBlank()){
+        throw new IllegalArgumentException("Product name must not be blank.");
+    }
+    if(currentPrice==null || currentPrice.compareTo(BigDecimal.ZERO)<=0){
+        throw new IllegalArgumentException("price must be greater than zero");
+    }
+    if(stockQuantity==null||stockQuantity< 0){
+        throw new IllegalArgumentException("stock quantity cannot be negative or empty");
+    }
         this.productName = productName;
         this.currentPrice = currentPrice;
         this.stockQuantity = stockQuantity;
         this.lastUpdated = LocalDateTime.now();
-    }
-    public void reserveStock(Integer stockQuantityRequested){
-        if(this.stockQuantity<stockQuantityRequested){
+}
+
+    public void reserveStock(Integer stockQuantity){
+         if(stockQuantity==null||stockQuantity<0){
+            throw new IllegalArgumentException("Stock quantity requested must be greater than zero.");
+        }
+        if(this.stockQuantity<stockQuantity){
             throw new ProductOutOfStockException("Product out of stock");
         }
-        this.stockQuantity-=stockQuantityRequested;
         
+        this.stockQuantity-=stockQuantity;
+        this.lastUpdated = LocalDateTime.now();
+   
     }
     //when cancelling an order this should be called to regain the stock
-    public void restoreStock(Integer stockQuantityRequested){
-        this.stockQuantity+=stockQuantityRequested;
+    public void restoreStock(Integer stockQuantity){
+        if(stockQuantity== null || stockQuantity<0){
+            throw new IllegalArgumentException("stock cannot be negative");
+        }
+        this.stockQuantity+=stockQuantity;
+        this.lastUpdated = LocalDateTime.now();
     }
 
     public void updatePrice(BigDecimal newPrice)
@@ -58,14 +77,6 @@ public class Product {
     this.currentPrice = newPrice;
     this.lastUpdated = LocalDateTime.now();
 }    
-    public void updateDetails(String productName,BigDecimal newPrice,Integer stockQuantity){
-        if(newPrice.compareTo(BigDecimal.ZERO) <= 0){
-            throw new IllegalArgumentException("Price must be greater than zero.");
-        }
-        this.productName=productName;
-        this.currentPrice=newPrice;
-        this.stockQuantity=stockQuantity;
-        this.lastUpdated=LocalDateTime.now();
-}
+    
 
 }
