@@ -1,4 +1,4 @@
-package com.abeer.store.entity;
+package com.abeer.store.enums;
 
 public enum Role {
     USER,

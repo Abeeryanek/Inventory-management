@@ -4,79 +4,69 @@ import java.net.URI;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.abeer.store.dto.request.CreateProductRequest;
-import com.abeer.store.dto.request.UpdatePriceRequest;
-import com.abeer.store.dto.request.UpdateProductRequest;
-import com.abeer.store.dto.response.ProductResponse;
+import com.abeer.store.dto.product.CreateProductRequest;
+import com.abeer.store.dto.product.ProductResponse;
+import com.abeer.store.dto.product.UpdatePriceRequest;
+import com.abeer.store.dto.product.UpdateStockQuantityRequest;
 import com.abeer.store.service.ProductService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 
 
 
-@Slf4j
+
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-    //GET: Retrieve a paginated catalog of all products
+ 
     @GetMapping
-    public ResponseEntity<Page<ProductResponse.Full>> getAllProducts(Pageable pageable){
-        log.info("Fetching a page of products");
-        Page<ProductResponse.Full>products = productService.findAll(pageable);
+    public ResponseEntity<Page<ProductResponse>> getAllProducts(Pageable pageable){
+        Page<ProductResponse>products = productService.findAll(pageable);
         return ResponseEntity.ok(products);
     }
-    //GET: Retrieve details for a single specific product
+    
    @GetMapping("/{id}")
-   public ResponseEntity<ProductResponse.Full> getProductById(@PathVariable Long id){
-    log.info("Fetching product ID: {}", id);
-    ProductResponse.Full product= productService.findById(id);
+   public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id){
+    ProductResponse product= productService.findById(id);
     return ResponseEntity.ok(product);
    }
-   //POST: Register a completely new product
+   
    @PostMapping
-   public ResponseEntity<ProductResponse.Full> createProduct(@Valid @RequestBody CreateProductRequest request){
-    log.info("POST /api/v1/products - name: {}", request.productName());
-    ProductResponse.Full created = productService.create(request);
-    URI location = URI.create("/api/v1/products/"+created.productId());
+   public ResponseEntity<ProductResponse> createProduct(@Valid @RequestBody CreateProductRequest request){
+    ProductResponse created = productService.create(request);
+    URI location = URI.create("/api/products/"+created.id());
     return ResponseEntity.created(location).body(created);
    }
-   //PUT: Fully overwrite an existing product
-   @PutMapping("/{id}")
-   public ResponseEntity<ProductResponse.Full> update(
-    @PathVariable Long id, @Valid @RequestBody UpdateProductRequest request){
-        log.info("PUT /api/v1/products/{}",id);
-        return ResponseEntity.ok(productService.update(id,request));
+   
+   @PatchMapping("/{id}/stockQuantity")
+   public ResponseEntity<ProductResponse> updateStockQuantity(
+    @PathVariable Long id, @Valid @RequestBody UpdateStockQuantityRequest request){
+        return ResponseEntity.ok(productService.updateStockQuantity(id,request));
     }
-    //PATCH: Update only the price of an existing product
+    
     @PatchMapping("/{id}/price")
-    public ResponseEntity<ProductResponse.Full>updatePrice(
+    public ResponseEntity<ProductResponse>updatePrice(
         @PathVariable Long id,@Valid @RequestBody UpdatePriceRequest request){
-            log.info("PATCH /api/v1/products/{}/price - new price: {}", id, request.currentPrice());
           return ResponseEntity.ok(productService.updatePrice(id,request));
         }
         
-    //DELETE: Permanently remove a product
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> delete(@PathVariable Long id){
-    log.info("DELETE/api/v1/products/{}",id);
-    productService.delete(id);
-    return ResponseEntity.noContent().build();
+    
+   @PatchMapping("/{id}")
+   public ResponseEntity<ProductResponse> markProductAsUnavailable(@PathVariable Long id){
+    return ResponseEntity.ok(productService.markUnavailable(id));
    }
     
 }

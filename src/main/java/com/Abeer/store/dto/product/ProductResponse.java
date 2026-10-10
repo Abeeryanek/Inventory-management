@@ -5,10 +5,11 @@ import java.time.LocalDateTime;
 
 
 public record ProductResponse(
-        Long productId,
-        String productName,
+        Long id,
+        String name,
         BigDecimal currentPrice,
-        Integer stockQuantity,
-        LocalDateTime lastUpdated
+        int stockQuantity,
+        LocalDateTime lastUpdated,
+        boolean isAvailable
     ) {}
 

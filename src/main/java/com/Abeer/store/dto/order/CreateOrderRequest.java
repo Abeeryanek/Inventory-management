@@ -1,4 +1,4 @@
-package com.abeer.store.dto.request;
+package com.abeer.store.dto.order;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

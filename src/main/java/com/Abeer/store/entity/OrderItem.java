@@ -11,13 +11,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity 
+@Entity
+@Setter  
+@Getter
 @Table(name="order_items")
 public class OrderItem {
     @Id  
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderItemId;
+    private Long id;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="order_id", nullable=false)
@@ -29,38 +33,25 @@ public class OrderItem {
     @Column(nullable=false)
     private BigDecimal priceAtPurchase;
     @Column(nullable=false)
-    private Integer quantity;
+    private int quantity;
 
   
-// ---DDD---
+
 protected OrderItem() {}
   public OrderItem(Order order, Product product, BigDecimal priceAtPurchase, Integer quantity){
+    if(order==null){
+        throw new IllegalArgumentException("");
+    }
+    if(product==null){
+        throw new IllegalArgumentException("");
+    }
+    if(priceAtPurchase.compareTo(BigDecimal.ZERO)<0){
+        throw new IllegalArgumentException("");
+    }
         this.order = order;
         this.product = product;
         this.priceAtPurchase = priceAtPurchase;
         this.quantity = quantity;
-    }
-    
-    //--- Getters ---
-    public BigDecimal getPriceAtPurchase() {
-        return priceAtPurchase;
-    }
-    public Integer getQuantity() {
-        return quantity;
-    }
-    public Product getProduct() {
-        return product;
-    }
-    public Order getOrder() {
-        return order;
-    }
-    public Long getOrderItemId(){
-        return orderItemId;
-    }
-    //---setters---
-
-    public void setOrder(Order order) {
-        this.order = order;
     }
     
 }

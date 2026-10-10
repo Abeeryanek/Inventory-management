@@ -5,9 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.abeer.store.dto.request.AddOrderItemRequest;
-import com.abeer.store.dto.request.CreateOrderRequest;
-import com.abeer.store.dto.response.OrderResponse;
+import com.abeer.store.dto.order.CreateOrderRequest;
+import com.abeer.store.dto.order.OrderResponse;
+import com.abeer.store.dto.orderItem.AddOrderItemRequest;
 import com.abeer.store.entity.Order;
 import com.abeer.store.entity.OrderItem;
 import com.abeer.store.entity.Product;
@@ -29,42 +29,48 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     @Transactional(readOnly=true)
-    public OrderResponse.Full findById(Long id){
+    public OrderResponse findById(Long id){
        Order order= findOrderOrThrow(id);
        return orderMapper.toResponse(order);
     }
     @Transactional(readOnly=true)
-    public Page<OrderResponse.Full> findAll(Pageable pageable) {
+    public Page<OrderResponse> findAll(Pageable pageable) {
         return orderRepository.findAll(pageable).map(orderMapper::toResponse);
     }
     @Transactional
-    public OrderResponse.Full create(CreateOrderRequest request){
+    public OrderResponse create(CreateOrderRequest request){
         User user = userRepository.findById(request.userId())
     .orElseThrow(()->new ResourceNotFoundException("User not found: " + request.userId()));
-        Order order = new Order(request.orderName(), user);
+    //id automatic generated right??
+        Order order = new Order(user);
         Order saved=orderRepository.save(order); 
         return orderMapper.toResponse(saved);
     }
     @Transactional
-    public OrderResponse.Full addOrderItem(Long id,AddOrderItemRequest request){
+    public OrderResponse addOrderItem(Long id,AddOrderItemRequest request){
        Order order=findOrderOrThrow(id);
        Product product = productRepository.findById(request.productId()).orElseThrow(()-> new ResourceNotFoundException("Product not found: " + request.productId()));
        OrderItem orderItem= new OrderItem(order, product, product.getCurrentPrice(), request.quantity());
+       product.reserveStock(request.quantity());
        order.addOrderItem(orderItem);
        Order saved = orderRepository.save(order);
        return orderMapper.toResponse(saved);
        
     }
     @Transactional
-    public void delete(Long id){
+    public OrderResponse cancel(Long id){
         Order order=findOrderOrThrow(id);
         order.cancel();
-        orderRepository.save(order);}
+        order.getItems().forEach(item->item.getProduct().restoreStock(item.getQuantity()));
+        Order saved = orderRepository.save(order);
+       return orderMapper.toResponse(saved);
+    }
 
     //private methods
     private Order findOrderOrThrow(Long id){
-        Order order=orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order not found: " + id));
 
+        Order order=orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order not found: " + id));
         return  order;
+        
     }
 }

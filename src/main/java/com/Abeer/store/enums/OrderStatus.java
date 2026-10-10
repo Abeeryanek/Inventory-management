@@ -2,10 +2,10 @@ package com.abeer.store.enums;
 
 public enum OrderStatus {
 PENDING,
-SHIPPED,
+CONFIRMED,
 PREPARED,
+SHIPPED,
 DELIVERED,
-CANCELLED,
-CONFIRMED 
+CANCELLED
 }
 

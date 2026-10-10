@@ -4,60 +4,67 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.abeer.store.dto.request.CreateProductRequest;
-import com.abeer.store.dto.request.UpdatePriceRequest;
-import com.abeer.store.dto.request.UpdateProductRequest;
-import com.abeer.store.dto.response.ProductResponse;
+import com.abeer.store.dto.product.CreateProductRequest;
+import com.abeer.store.dto.product.ProductResponse;
+import com.abeer.store.dto.product.UpdatePriceRequest;
+import com.abeer.store.dto.product.UpdateStockQuantityRequest;
 import com.abeer.store.entity.Product;
 import com.abeer.store.exception.ResourceNotFoundException;
 import com.abeer.store.mapper.ProductMapper;
 import com.abeer.store.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
+@Slf4j
 @Service
 @Transactional
-//i shoulndt add logs here or how seniors do it 
 public class ProductService {
       private final ProductMapper productMapper;
       private final ProductRepository productRepository;
     @Transactional(readOnly=true)
-    public ProductResponse.Full findById(Long id) { 
+    public ProductResponse findById(Long id) { 
       Product product=findProductOrThrow(id);
       return productMapper.toResponse(product); }
 
     @Transactional(readOnly=true)
     //here i can create a reposne and a new mapper and map or what
-    public Page<ProductResponse.Full> findAll(Pageable pageable) { 
+    public Page<ProductResponse> findAll(Pageable pageable) { 
       return productRepository.findAll(pageable).map(productMapper::toResponse); }
     @Transactional
-    public ProductResponse.Full create(CreateProductRequest request) { 
-      if(productRepository.existsByProductName(request.productName()))
+    //TODO test create with null 
+    public ProductResponse create(CreateProductRequest request) { 
+      if(productRepository.existsByProductName(request.name()))
         throw new IllegalArgumentException(
-          "product with the name '"+request.productName() + "' alreday exists");
-      Product product= new Product(request.productName(),request.currentPrice(),request.stockQuantity());
+          "product with the name '"+request.name() + "' alreday exists");
+      Product product = new Product(request.name(),request.currentPrice(),request.stockQuantity());
       Product saved = productRepository.save(product);
       return productMapper.toResponse(saved);
     }
     @Transactional
-    public ProductResponse.Full update(Long id, UpdateProductRequest request) { 
+    //TODO assert equal to expected stock number extra
+    public ProductResponse updateStockQuantity(Long id, UpdateStockQuantityRequest request) { 
       Product product=findProductOrThrow(id);
-      product.updateDetails(request.productName(), request.currentPrice(), request.stockQuantity());
+      product.addStockQuantity(request.stockQuantity());
       Product saved = productRepository.save(product);
       return productMapper.toResponse(saved);
       }
       @Transactional
-    public ProductResponse.Full updatePrice(Long id, UpdatePriceRequest request) { 
+    //TODO assert equal to expected new price
+    public ProductResponse updatePrice(Long id, UpdatePriceRequest request) { 
       Product product=findProductOrThrow(id);
       product.updatePrice(request.currentPrice());
       Product saved = productRepository.save(product);
       return productMapper.toResponse(saved);
      }
      @Transactional
-    public void delete(Long id) {
+     //TODO assert equal unavailable state  
+    public ProductResponse markUnavailable(Long id) {
       Product product=findProductOrThrow(id);
-      productRepository.delete(product);
+      product.markUnavailable();
+      Product saved = productRepository.save(product);
+      return productMapper.toResponse(saved);
     }
     
     //private methods 

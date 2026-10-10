@@ -7,11 +7,12 @@ import com.abeer.store.entity.Product;
 public class ProductMapper {
     public ProductResponse toResponse(Product product){
         return new ProductResponse(
-        product.getProductId(),
-        product.getProductName(),
+        product.getId(),
+        product.getName(),
         product.getCurrentPrice(),
         product.getStockQuantity(),
-        product.getLastUpdated());
+        product.getLastUpdated(),
+        product.isAvailable());
     
 }
 }

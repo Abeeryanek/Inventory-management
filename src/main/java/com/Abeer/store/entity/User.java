@@ -1,6 +1,8 @@
 package com.abeer.store.entity;
 import java.util.List;
 
+import com.abeer.store.enums.Role;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

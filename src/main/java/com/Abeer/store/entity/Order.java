@@ -1,8 +1,9 @@
 package com.abeer.store.entity;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.abeer.store.enums.OrderStatus;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -17,19 +18,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import lombok.Getter;
 
 @Entity
 @Table(name="Orders")
+@Getter
 public class Order {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
-
-    @NotBlank
-    @Column(nullable=false)
-    private String orderName;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
@@ -45,16 +43,20 @@ public class Order {
     @OneToMany(mappedBy="order", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<OrderItem> items = new ArrayList<>();
 
-    //--- Constructors ---
+   
     protected Order() {}
+    
+    public Order(User user){
+        if(user==null){
+            throw new IllegalArgumentException("user should not be null"
 
-    public Order(String orderName, User user){
-        this.orderName = orderName;
+            );
+        }
         this.user = user;
         this.status = OrderStatus.PENDING;
     }
 
-    // --- DDD Logic ---
+    
 
     public void markAsShipped() {
         if (this.status == OrderStatus.CANCELLED) {
@@ -63,53 +65,21 @@ public class Order {
         //price will be taken from the konto //TODO 
         this.status = OrderStatus.SHIPPED;
     }
-    public void addOrderItem(OrderItem newItem){
-       if(this.status == OrderStatus.CANCELLED || this.status == OrderStatus.SHIPPED) {
-           throw new IllegalStateException("Cannot add items to a cancelled order.");
-       }
-       this.items.add(newItem);
-       newItem.setOrder(this);
-       newItem.getProduct().reserveStock(newItem.getQuantity());
-        recalculatedTotalPrice();
-    }
-    public void recalculatedTotalPrice() {
-        this.totalPrice= this.items.stream().map(item-> item.getPriceAtPurchase()
-        .multiply(BigDecimal.valueOf(item.getQuantity())))
-        .reduce(BigDecimal.ZERO, BigDecimal::add);
-    }
+ 
     public void cancel(){
         if(this.status==OrderStatus.SHIPPED || 
-            this.status==OrderStatus.DELIVERED){
+            this.status==OrderStatus.DELIVERED ||
+       this.status==OrderStatus.CANCELLED ){
                 throw new IllegalStateException(
                     "cannot cancel an order that is already been" +this.status);
-            }
-            //refund the person logic later //TODO 
-            for(OrderItem items:this.getItems()){
-                items.getProduct().restoreStock(items.getQuantity());
-            }
+                }
              this.status = OrderStatus.CANCELLED;
-    }
-    //--- Getters ---
-    public Long getOrderId() {
-        return orderId;
-    }
+        }
+    public void addOrderItem(OrderItem orderItem)
+    {
+        items.add(orderItem);
+        this.totalPrice=totalPrice.add(orderItem.getPriceAtPurchase().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
 
-    public String getOrderName() {
-        return orderName;
     }
-
-    public OrderStatus getOrderStatus() {
-        return status;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public List<OrderItem> getItems() {
-        return items;
-    }
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
-}
+    
 }
