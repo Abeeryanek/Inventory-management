@@ -21,19 +21,19 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 public class ProductService {
+     
       private final ProductMapper productMapper;
       private final ProductRepository productRepository;
+      
     @Transactional(readOnly=true)
     public ProductResponse findById(Long id) { 
       Product product=findProductOrThrow(id);
       return productMapper.toResponse(product); }
 
     @Transactional(readOnly=true)
-    //here i can create a reposne and a new mapper and map or what
     public Page<ProductResponse> findAll(Pageable pageable) { 
       return productRepository.findAll(pageable).map(productMapper::toResponse); }
     @Transactional
-    //TODO test create with null 
     public ProductResponse create(CreateProductRequest request) { 
       if(productRepository.existsByProductName(request.name()))
         throw new IllegalArgumentException(
@@ -43,7 +43,6 @@ public class ProductService {
       return productMapper.toResponse(saved);
     }
     @Transactional
-    //TODO assert equal to expected stock number extra
     public ProductResponse updateStockQuantity(Long id, UpdateStockQuantityRequest request) { 
       Product product=findProductOrThrow(id);
       product.addStockQuantity(request.stockQuantity());
@@ -51,15 +50,13 @@ public class ProductService {
       return productMapper.toResponse(saved);
       }
       @Transactional
-    //TODO assert equal to expected new price
     public ProductResponse updatePrice(Long id, UpdatePriceRequest request) { 
       Product product=findProductOrThrow(id);
       product.updatePrice(request.currentPrice());
       Product saved = productRepository.save(product);
       return productMapper.toResponse(saved);
      }
-     @Transactional
-     //TODO assert equal unavailable state  
+     @Transactional  
     public ProductResponse markUnavailable(Long id) {
       Product product=findProductOrThrow(id);
       product.markUnavailable();

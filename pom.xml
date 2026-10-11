@@ -8,8 +8,8 @@
 		<version>3.5.10</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>demo</artifactId>
+	<groupId>om.abeer</groupId>
+	<artifactId>store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Abeer</name>
 	<description>REST API for managing products, orders, and inventory.</description>
@@ -27,6 +27,7 @@
 		<url/>
 	</scm>
 	<properties>
+		<lombok.version>1.18.42</lombok.version>
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>

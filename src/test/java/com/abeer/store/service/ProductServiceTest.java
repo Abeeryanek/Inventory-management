@@ -1,4 +1,4 @@
-package demo.service;
+package com.abeer.store.service;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -26,18 +26,21 @@ import com.abeer.store.service.ProductService;
 public class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
-    @Spy
-    private ProductMapper productMapper;
     @InjectMocks
     private ProductService productService;
 
+    private Product aProduct(){
+        return new Product(
+            "Laptop", BigDecimal.valueOf(100), 1
+        );
+    }
     //arrange
     //act 
     //assert
     @Test
-    public void shouldSaveProductAndReturnResponseWhenRequestIsValid(){
+    void shouldSaveProductAndReturnResponseWhenRequestIsValid(){
         CreateProductRequest request= new CreateProductRequest("Laptop", BigDecimal.valueOf(100), 1);
-        Product savedProduct = new Product("Laptop", BigDecimal.valueOf(100), 1);
+        Product savedProduct = aProduct();
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
 
         ProductResponse result=productService.create(request);
@@ -50,9 +53,9 @@ public class ProductServiceTest {
        
     }
     @Test
-    public void shouldIncreaseStockWhenQuantityIsPositive(){
+    void shouldIncreaseStockWhenQuantityIsPositive(){
         UpdateStockQuantityRequest request= new UpdateStockQuantityRequest(2);
-        Product savedProduct = new Product("Laptop", BigDecimal.valueOf(100), 1);
+        Product savedProduct = aProduct();
         //i didnt write setter for id here we need id for the method 
         when(productRepository.findById(1L)).thenReturn(Optional.of(savedProduct));
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
@@ -63,8 +66,8 @@ public class ProductServiceTest {
 
     }
     @Test
-    public void shouldChangePriceWhenQuantityIsPositive(){
-        Product savedProduct= new Product("Laptop", BigDecimal.valueOf(100), 1);
+    void shouldChangePriceWhenQuantityIsPositive(){
+        Product savedProduct= aProduct();
         UpdatePriceRequest request=new UpdatePriceRequest(BigDecimal.valueOf(50));
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(savedProduct));
@@ -75,10 +78,10 @@ public class ProductServiceTest {
         verify(productRepository).findById(1L);
     }
     @Test
-    public void shouldBeUnavailable(){
-        Product product = new Product("Laptop", BigDecimal.valueOf(100), 1);
-        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-        when(productRepository.save(any(Product.class))).thenReturn(product);
+     void shouldBeUnavailable(){
+        Product savedProduct = aProduct();
+        when(productRepository.findById(1L)).thenReturn(Optional.of(savedProduct));
+        when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
        ProductResponse result= productService.markUnavailable(1L);
         
         assertFalse(result.isAvailable());
