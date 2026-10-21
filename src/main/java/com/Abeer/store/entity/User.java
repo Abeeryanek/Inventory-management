@@ -17,8 +17,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(
     name="users",
     uniqueConstraints={
@@ -60,22 +62,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-    }
-    //--- Getters ---
-    public Long getId() {
-        return id;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public java.util.List<Order> getOrders() {
-        return orders;
     }
 
 }
