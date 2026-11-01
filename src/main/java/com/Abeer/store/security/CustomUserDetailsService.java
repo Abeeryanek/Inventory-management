@@ -1,10 +1,9 @@
-package com.abeer.store.service;
+package com.abeer.store.security;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.abeer.store.entity.CustomUserDetails;
 import com.abeer.store.repository.UserRepository;
 import com.abeer.store.entity.User;
 public class CustomUserDetailsService implements UserDetailsService {

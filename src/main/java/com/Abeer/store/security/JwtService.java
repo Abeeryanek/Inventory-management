@@ -1,4 +1,4 @@
-package com.abeer.store.service;
+package com.abeer.store.security;
 
 import javax.crypto.SecretKey;
 
@@ -9,7 +9,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
-import com.abeer.store.entity.CustomUserDetails;
 import java.util.Date;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;

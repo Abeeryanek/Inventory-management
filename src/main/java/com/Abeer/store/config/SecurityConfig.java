@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import com.abeer.store.security.JwtAuthFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
-    private final JWTAuthFilter jwtAuthFilter;
+    private final JwtAuthFilter jwtAuthFilter;
     
     @Bean 
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{

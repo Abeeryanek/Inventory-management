@@ -1,4 +1,4 @@
-package com.abeer.store.entity;
+package com.abeer.store.security;
 
 import java.util.List;
 import java.util.Collection;
@@ -6,6 +6,8 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.abeer.store.entity.User;
 
 public class CustomUserDetails implements UserDetails {
 
