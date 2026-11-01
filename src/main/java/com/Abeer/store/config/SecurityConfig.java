@@ -16,17 +16,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration 
 @EnableWebSecurity 
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
+    private final JWTAuthFilter jwtAuthFilter;
 
      public SecurityConfig(UserDetailsService userDetailsService,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          JWTAuthFilter jwtAuthFilter) {
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
+        this.jwtAuthFilter = jwtAuthFilter;
+
     }
     
     @Bean 
@@ -41,6 +46,7 @@ public class SecurityConfig {
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated())
             .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(ex->ex
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
                 .accessDeniedHandler((request, response, e)-> response.setStatus(HttpStatus.FORBIDDEN.value())));
