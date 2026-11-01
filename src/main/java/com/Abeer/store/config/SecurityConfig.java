@@ -18,21 +18,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration 
+@RequiredArgsConstructor 
 @EnableWebSecurity 
 public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final JWTAuthFilter jwtAuthFilter;
-
-     public SecurityConfig(UserDetailsService userDetailsService,
-                          PasswordEncoder passwordEncoder,
-                          JWTAuthFilter jwtAuthFilter) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtAuthFilter = jwtAuthFilter;
-
-    }
     
     @Bean 
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{

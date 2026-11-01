@@ -6,29 +6,32 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+
 import com.abeer.store.entity.CustomUserDetails;
 import java.util.Date;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import java.lang.IllegalArgumentException;
-
+import com.abeer.store.config.JwtProperties;
+@RequiredArgsConstructor 
 @Service 
 public class JwtService {
-    private final SecretKey key;
-    private final long expirationMs;
-
-    public JwtService(@Value("${app.jwt.secret}") String secret, @Value("${app.jwt.expiration-ms}") long expirationMs) {
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
-        this.expirationMs = expirationMs;
+    private final JwtProperties jwtProperties;
+    private SecretKey key;
+    @PostConstruct 
+    private void init() {
+        byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
     public String generateToken(CustomUserDetails userDetails) {
         Date now = new Date();
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(now)
-                .expiration(new Date(now.getTime() + expirationMs))
+                .expiration(new Date(now.getTime() + jwtProperties.getExpirationMs()))
                 .signWith(key)
                 .compact();
     }
