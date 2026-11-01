@@ -15,6 +15,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import java.lang.IllegalArgumentException;
 import com.abeer.store.config.JwtProperties;
+import org.springframework.security.core.userdetails.UserDetails;
 @RequiredArgsConstructor 
 @Service 
 public class JwtService {
@@ -38,7 +39,7 @@ public class JwtService {
     public String extractUsername(String token){
         return parseClaims(token).getSubject();
     }
-    public boolean isValid(String token, CustomUserDetails userDetails){
+    public boolean validateToken(String token, UserDetails userDetails){
         try{
             return parseClaims(token).getSubject().equals(userDetails.getUsername());
         }
