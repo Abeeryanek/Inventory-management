@@ -57,7 +57,7 @@ public class ProductControllerTest {
         .andExpect(jsonPath("$.name").value("Laptop"));
     }
     @Test
-    void  shouldReturn404WhenRequestIsValid() throws Exception {
+    void  shouldReturn200WhenUpdateStockRequestIsValid() throws Exception {
         when(productService.updateStockQuantity(eq(1L), any(UpdateStockQuantityRequest.class)))
         .thenReturn(aResponse());
         mockMvc.perform(patch("/api/products/1/stockQuantity")
@@ -69,7 +69,7 @@ public class ProductControllerTest {
         .andExpect(jsonPath("$.name").value("Laptop"));
     }
     @Test
-    void  shouldReturn400WhenRequestIsValid() throws Exception {
+    void  shouldReturn200WhenUpdatePriceRequestIsValid() throws Exception {
         when(productService.updatePrice(eq(1L),any(UpdatePriceRequest.class)))
         .thenReturn(aResponse());
         mockMvc.perform(patch("/api/products/1/price")
