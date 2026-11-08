@@ -4,29 +4,33 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.abeer.store.entity.User;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import com.abeer.store.mapper.UserMapper;
 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.abeer.store.security.CustomUserDetails;
+import com.abeer.store.service.UserService;
 
-@RestController 
+import lombok.RequiredArgsConstructor;
+
+import com.abeer.store.dto.user.UserResponse;
+
+@RestController
+@RequiredArgsConstructor 
+@RequestMapping("/api/users") 
 public class UserController {
-
-    //TODO Service
-
-    @GetMapping("/login")
-    public String getMethodName(@RequestParam User user) {
-        //TODO: process get login request
-        return "ss";
+    
+    private final UserService userService;
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser (@AuthenticationPrincipal CustomUserDetails userDetail) {
+       UserResponse response=userService.findMe(userDetail.getId());
+       return ResponseEntity.ok(response);
     }
-    @PostMapping("/register")
-    public String postMethodName(@RequestBody String entity) {
-        //TODO: process POST registration request
-        
-        return "ss";
-    }
-    
-    
-    
-    
+
 
 }
+
+
+

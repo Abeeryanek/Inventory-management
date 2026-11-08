@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import com.abeer.store.enums.Role;
 import com.abeer.store.entity.User;
 
 public class CustomUserDetails implements UserDetails {
@@ -32,4 +32,10 @@ public class CustomUserDetails implements UserDetails {
     @Override public boolean isAccountNonLocked()      { return true; }
     @Override public boolean isAccountNonExpired()     { return true; }
     @Override public boolean isCredentialsNonExpired() { return true; }
+    public Long getId(){
+        return user.getId();
+    }
+    public Role getRole(){
+        return user.getRole();
+    }
 }
