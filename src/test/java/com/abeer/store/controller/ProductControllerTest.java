@@ -11,7 +11,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.abeer.store.dto.product.*;
+import com.abeer.store.security.JwtService;
 import com.abeer.store.service.ProductService;
+import com.abeer.store.service.UserService;
 
 import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,6 +31,10 @@ public class ProductControllerTest {
 
     @MockitoBean 
     private ProductService productService;
+    @MockitoBean
+    private UserService userService;
+    @MockitoBean
+    private JwtService jwtService;
 
     private ProductResponse aResponse(){
         return new ProductResponse(
