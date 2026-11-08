@@ -6,13 +6,11 @@ import com.abeer.store.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
-import com.abeer.store.dto.auth.RegisterRequest;
+
 import com.abeer.store.dto.user.UserResponse;
-import com.abeer.store.entity.User;
+
 import com.abeer.store.mapper.UserMapper;
-import java.util.Optional;
-import com.abeer.store.mapper.UserMapper;
-import lombok.RequiredArgsConstructor;
+
 
 
 @RequiredArgsConstructor

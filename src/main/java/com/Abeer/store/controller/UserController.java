@@ -1,21 +1,16 @@
 package com.abeer.store.controller;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import com.abeer.store.entity.User;
-import com.abeer.store.mapper.UserMapper;
-
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.abeer.store.dto.user.UserResponse;
 import com.abeer.store.security.CustomUserDetails;
 import com.abeer.store.service.UserService;
 
 import lombok.RequiredArgsConstructor;
-
-import com.abeer.store.dto.user.UserResponse;
 
 @RestController
 @RequiredArgsConstructor 

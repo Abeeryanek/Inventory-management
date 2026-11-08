@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.abeer.store.mapper.UserMapper;
 import com.abeer.store.security.JwtService;
+import com.abeer.store.service.AuthService;
 import com.abeer.store.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,25 +25,22 @@ import com.abeer.store.dto.user.*;
 @RestController 
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor 
-public abstract class AuthController {
+public class AuthController {
     
-    private final AuthenticationManager authenticationManager;
-    private final JwtService jwtService;
-    private final UserService userService;
-    private final UserMapper userMapper;
+    private final AuthService authService;
     //TODO api register 
     @PostMapping("/register")
-    public ResponseEntity<UserResponse> register(@Valid @RequestBody RegisterRequest request){
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request){
         
-        UserResponse response;
-        return ResponseEntity.ok(null);
+        AuthResponse response= authService.register(request);
+        return ResponseEntity.ok(response);
     }
     //TODO api login 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody String entity) {
-        AuthResponse response;
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+        AuthResponse response=authService.login(request);
         
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(response);
     }
     
     

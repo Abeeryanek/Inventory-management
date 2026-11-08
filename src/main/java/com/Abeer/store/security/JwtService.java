@@ -23,7 +23,9 @@ public class JwtService {
     private SecretKey key;
     @PostConstruct 
     private void init() {
+        System.out.println("secret length = " + jwtProperties.getSecret().length());
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
+        System.out.println("decoded bytes = " + keyBytes.length);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
     public String generateToken(CustomUserDetails userDetails) {
