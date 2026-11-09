@@ -43,7 +43,12 @@ public class JwtService {
     }
     public boolean validateToken(String token, UserDetails userDetails){
         try{
-            return parseClaims(token).getSubject().equals(userDetails.getUsername());
+            Claims claims = parseClaims(token);
+            boolean usernameMatches = claims.getSubject().equals(userDetails.getUsername());
+            
+            boolean isTokenNotExpired = !claims.getExpiration().before(new Date());
+
+            return usernameMatches && isTokenNotExpired;
         }
         catch(JwtException | IllegalArgumentException e){
             return false;

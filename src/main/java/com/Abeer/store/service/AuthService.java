@@ -6,6 +6,9 @@ import com.abeer.store.entity.User;
 import com.abeer.store.repository.UserRepository;
 import com.abeer.store.security.CustomUserDetails;
 import com.abeer.store.security.JwtService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,9 +26,9 @@ public class AuthService {
      private final UserRepository userRepository;
      private final PasswordEncoder passwordEncoder;
      private final AuthenticationManager authenticationManager;
-
+    @Transactional 
     public AuthResponse register (RegisterRequest request){
-       String email = request.email().toLowerCase();
+       String email = request.email().trim().toLowerCase();
 
         if (userRepository.existsByUsername(request.username()))
             throw new IllegalArgumentException("Username already taken");

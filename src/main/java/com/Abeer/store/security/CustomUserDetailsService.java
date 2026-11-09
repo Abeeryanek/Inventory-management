@@ -18,7 +18,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override 
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
         Optional<User> found = identifier.contains("@")
-        ? userRepository.findByEmail(identifier.toLowerCase())
+        ? userRepository.findByEmail(identifier.trim().toLowerCase())
         : userRepository.findByUsername(identifier);
         User user = found.orElseThrow(() -> new UsernameNotFoundException("User not found"));       
         // Return your custom wrapper holding the entity data

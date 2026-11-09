@@ -42,7 +42,6 @@ public class OrderService {
     public OrderResponse create(CreateOrderRequest request){
         User user = userRepository.findById(request.userId())
     .orElseThrow(()->new ResourceNotFoundException("User not found: " + request.userId()));
-    //id automatic generated right??
         Order order = new Order(user);
         Order saved=orderRepository.save(order); 
         return orderMapper.toResponse(saved);
