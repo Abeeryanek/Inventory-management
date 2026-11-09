@@ -35,7 +35,7 @@ public class ProductService {
       return productRepository.findAll(pageable).map(productMapper::toResponse); }
     @Transactional
     public ProductResponse create(CreateProductRequest request) { 
-      if(productRepository.existsByProductName(request.name()))
+      if(productRepository.existsByName(request.name()))
         throw new IllegalArgumentException(
           "product with the name '"+request.name() + "' alreday exists");
       Product product = new Product(request.name(),request.currentPrice(),request.stockQuantity());

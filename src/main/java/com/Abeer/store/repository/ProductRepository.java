@@ -6,5 +6,5 @@ import com.abeer.store.entity.Product;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
-    public boolean existsByProductName(String Name);
+    public boolean existsByName(String name);
 }
