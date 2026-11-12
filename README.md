@@ -54,7 +54,7 @@ Controller  ->  Service  ->  Repository  ->  MySQL
 
 - `User` (username, email, password hash, role)
 - `Product` (name, current price, stock quantity, availability)
-- `Order` (user, total price, items)
+- `Order` (user, total price, items, status)
 - `OrderItem` (product, quantity, price at purchase)
 
 ## Getting started
